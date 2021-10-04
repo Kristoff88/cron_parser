@@ -36,13 +36,22 @@ def __check_substring_count(substrings):
     raise CronStringError("Missing substrings: {}".format(EXPECTED_SUBSTRINGS[num_of_substrings:]))
 
 
-def __parse_substring(substr, name, lower_bound, upper_bound):
+def __parse_substring(substr, name, min_value, max_value):
   unwound_expression = substr
 
   if substr == '*':
-    unwound_expression = ' '.join(str(x) for x in range(lower_bound, upper_bound+1))
+    unwound_expression = __unwind_range(min_value, max_value)
 
-  elif int(substr) < lower_bound or int(substr) > upper_bound:
-    raise CronStringError("{} {} outside of range {}-{}!".format(name, int(substr), lower_bound, upper_bound))
+  elif '-' in substr:
+    lower_bound, upper_bound = substr.split('-')
+    unwound_expression = __unwind_range(int(lower_bound), int(upper_bound))
+
+  elif int(substr) < min_value or int(substr) > max_value:
+    raise CronStringError("{} {} outside of range {}-{}!".format(name, int(substr), min_value, max_value))
 
   return unwound_expression
+
+
+def __unwind_range(min_value, max_value):
+  return ' '.join(str(x) for x in range(min_value, max_value+1))
+
