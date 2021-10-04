@@ -1,11 +1,12 @@
 
+class CronStringError(Exception):
+  pass
+
+
 def parse_cron(cron_str):
   substrings = [x for x in cron_str.split(' ') if x]
 
   result = __check_substring_count(substrings)
-
-  if result:
-    return result
 
   minute, hour, day_of_month, month, day_of_week = substrings[:5]
   command = " ".join(substrings[5:])
@@ -27,6 +28,4 @@ def __check_substring_count(substrings):
   num_of_substrings = len(substrings)
 
   if num_of_substrings < MINIMAL_SUBSTRINGS_COUNT:
-    return "Missing substrings: {}".format(EXPECTED_SUBSTRINGS[num_of_substrings:])
-
-
+    raise CronStringError("Missing substrings: {}".format(EXPECTED_SUBSTRINGS[num_of_substrings:]))

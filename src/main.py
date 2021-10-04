@@ -19,9 +19,14 @@
 
 
 import sys
-from parse_cron import parse_cron
+
+from parse_cron import parse_cron, CronStringError
+
 
 assert len(sys.argv) == 2
 cron_string = sys.argv[1]
 
-print( parse_cron(cron_string) )
+try:
+  print( parse_cron(cron_string) )
+except CronStringError as err:
+  print(err)
