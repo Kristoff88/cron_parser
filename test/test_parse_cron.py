@@ -113,6 +113,17 @@ command       /some_command
 """
 
 
+def test_sequence():
+  assert parse_cron("0,15,30,45 6,12,18 15,25 1,2,3 0,1,2,3,4,5,6 /some_command") == """
+minute        0 15 30 45
+hour          6 12 18
+day of month  15 25
+month         1 2 3
+day of week   0 1 2 3 4 5 6
+command       /some_command
+"""
+
+
 def test_complex_command():
   assert parse_cron("0 0 1 1 0 /some_command --with-param; /some_other_command && /yet_another_command") == """
 minute        0
