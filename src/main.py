@@ -20,7 +20,8 @@
 
 import sys
 
-from parse_cron import parse_cron, CronStringError
+from cron_string_error import CronStringError
+from parse_cron import parse_cron
 
 
 assert len(sys.argv) == 2

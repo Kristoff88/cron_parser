@@ -1,6 +1,7 @@
 import pytest
 
-from src.parse_cron import parse_cron, CronStringError
+from cron_string_error import CronStringError
+from parse_cron import parse_cron
 
 
 def test_given_less_substrings__raises_error():
