@@ -1,33 +1,23 @@
-#import argparse
-#
-#parser = argparse.ArgumentParser(description='Process some integers.')
-#parser.add_argument('minute', type=str, help='foo')
-#parser.add_argument('hour', type=str, help='foo')
-#parser.add_argument('day_of_month', type=str, metavar='day of month', help='foo')
-#parser.add_argument('month', type=str, help='foo')
-#parser.add_argument('day_of_week', type=str, metavar='day of week', help='foo')
-#parser.add_argument('command', type=str, help='foo')
-#
-#args = parser.parse_args()
-#
-#print(args.minute)
-#print(args.hour)
-#print(args.day_of_month)
-#print(args.month)
-#print(args.day_of_week)
-#print(args.command)
-
-
-import sys
+import argparse
 
 from cron_string_error import CronStringError
 from parse_cron import parse_cron
 
 
-assert len(sys.argv) == 2
-cron_string = sys.argv[1]
+parser = argparse.ArgumentParser(
+  description="Takes cron string and expands each field "
+              "to show the times at which it will run."
+)
+parser.add_argument(
+  'cron_string',
+  type=str,
+  help="cron string composed of minute, hour, day of "
+       "month, month, and day of week"
+)
+
+args = parser.parse_args()
 
 try:
-  print( parse_cron(cron_string) )
+  print( parse_cron(args.cron_string) )
 except CronStringError as err:
   print(err)
