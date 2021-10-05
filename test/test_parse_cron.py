@@ -124,6 +124,17 @@ command       /some_command
 """
 
 
+def test_intervals():
+  assert parse_cron("*/20 */12 */10 */4 */2 /some_command") == """
+minute        0 20 40
+hour          0 12
+day of month  1 11 21 31
+month         1 5 9
+day of week   0 2 4 6
+command       /some_command
+"""
+
+
 def test_complex_command():
   assert parse_cron("0 0 1 1 0 /some_command --with-param; /some_other_command && /yet_another_command") == """
 minute        0
@@ -132,4 +143,15 @@ day of month  1
 month         1
 day of week   0
 command       /some_command --with-param; /some_other_command && /yet_another_command
+"""
+
+
+def test_task_example():
+  assert parse_cron("*/15 0 1,15 * 1-5 /usr/bin/find") == """
+minute        0 15 30 45
+hour          0
+day of month  1 15
+month         1 2 3 4 5 6 7 8 9 10 11 12
+day of week   1 2 3 4 5
+command       /usr/bin/find
 """
